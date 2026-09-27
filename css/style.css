@@ -1,0 +1,275 @@
+/* ============================================================
+   GUEST LIST - STYLES
+   Same palette and fonts as the invitation card.
+   ============================================================ */
+
+:root{
+  --blush-1:#F9EAE7;
+  --blush-2:#EFD3CE;
+  --blush-3:#E2B9B3;
+  --maroon:#9B273A;
+  --maroon-deep:#7C1C2C;
+  --gold:#C3A05A;
+  --gold-lt:#E2CB96;
+  --cream:#FDF6F5;
+  --paper:#FBEFEE;
+  --rose-line:#E4A9AE;
+  --ink:#3B161E;
+  --muted:#764C54;
+  --white:#fff;
+
+  --bride:#B0456A;
+  --groom:#3F5F8C;
+  --both:#8A6A2A;
+
+  --script:'Great Vibes', cursive;
+  --serif:'Lora', Georgia, serif;
+
+  --radius:14px;
+  --shadow-soft:0 10px 30px rgba(107,20,33,.10);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{ -webkit-text-size-adjust:100% }
+
+body{
+  margin:0;
+  font-family:var(--serif);
+  color:var(--ink);
+  background:var(--paper);
+  background-image:radial-gradient(circle at 50% -10%, var(--blush-2), transparent 55%);
+  background-attachment:fixed;
+  line-height:1.5;
+  font-size:16px;
+}
+
+h1,h2,p{margin:0}
+[hidden]{display:none !important}
+a{color:var(--maroon)}
+
+.wrap{
+  max-width:640px;
+  margin:0 auto;
+  padding:16px 16px calc(40px + env(safe-area-inset-bottom));
+}
+
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.note{padding:24px;text-align:center}
+
+/* ---------- header ---------- */
+.top{text-align:center;padding:18px 0 14px}
+.orn{color:var(--gold);font-size:.8rem;letter-spacing:.4em}
+.script{
+  font-family:var(--script);
+  font-weight:400;
+  color:var(--maroon);
+  font-size:clamp(2.6rem, 11vw, 3.4rem);
+  line-height:1.1;
+}
+.sub{color:var(--muted);font-style:italic;font-size:.95rem}
+
+/* ---------- cards ---------- */
+.card{
+  background:var(--cream);
+  border:1px solid var(--rose-line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-soft);
+  padding:18px 16px 20px;
+  margin-bottom:16px;
+}
+.card h2{font-size:1.15rem;font-weight:600;color:var(--maroon-deep);margin-bottom:6px}
+.card.is-editing{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-lt), var(--shadow-soft)}
+
+/* ---------- form controls ---------- */
+label,.label{display:block;font-size:.85rem;font-weight:600;color:var(--muted);margin:14px 0 5px}
+label .muted{font-weight:400}
+
+input[type=text],input[type=password],input[type=search],input[type=number],select,textarea{
+  width:100%;
+  font:inherit;
+  font-size:16px;              /* stops iOS zooming into the field */
+  color:var(--ink);
+  background:var(--white);
+  border:1px solid var(--blush-3);
+  border-radius:10px;
+  padding:10px 12px;
+  min-height:44px;
+}
+textarea{resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible,summary:focus-visible{
+  outline:2px solid var(--maroon);
+  outline-offset:1px;
+}
+
+.btn{
+  font:inherit;
+  font-size:.95rem;
+  font-weight:600;
+  border-radius:999px;
+  border:1px solid var(--maroon);
+  background:transparent;
+  color:var(--maroon);
+  padding:10px 18px;
+  min-height:44px;
+  cursor:pointer;
+}
+.btn.primary{background:var(--maroon);color:var(--white)}
+.btn.primary:active{background:var(--maroon-deep)}
+.btn.ghost{border-color:var(--blush-3);color:var(--maroon-deep);background:var(--white)}
+.btn.danger{border-color:#c9868f;color:#A1182D;background:var(--white)}
+.btn.small{padding:6px 12px;min-height:38px;font-size:.85rem}
+.btn:disabled{opacity:.5;cursor:default}
+
+.link{
+  font:inherit;background:none;border:0;padding:0;
+  color:var(--maroon);text-decoration:underline;cursor:pointer;
+}
+
+#unlockForm .btn.primary{width:100%;margin-top:20px}
+.error{color:#A1182D;margin-top:12px;font-size:.9rem}
+
+.inline-add{display:flex;gap:8px;margin-top:8px;align-items:center}
+.inline-add input{flex:1;min-width:0}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  font:inherit;font-size:.9rem;
+  border:1px solid var(--blush-3);
+  background:var(--white);
+  color:var(--ink);
+  border-radius:999px;
+  padding:8px 14px;
+  min-height:40px;
+  cursor:pointer;
+}
+.chip[aria-pressed="true"]{background:var(--maroon);border-color:var(--maroon);color:var(--white)}
+
+.stepper{display:flex;gap:8px;align-items:center}
+.stepper input{width:80px;text-align:center}
+.stepper .btn{width:44px;padding:0;font-size:1.2rem}
+
+.form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.form-actions .btn.primary{flex:1}
+
+/* ---------- totals ---------- */
+/* two headline tiles (invites, people) above one tile per side */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(6, 1fr);
+  gap:8px;
+  margin-bottom:16px;
+}
+.stats .stat{grid-column:span 2}
+.stats .stat:nth-child(-n+2){grid-column:span 3}
+.stat{
+  background:var(--cream);
+  border:1px solid var(--rose-line);
+  border-radius:12px;
+  padding:10px 6px;
+  text-align:center;
+}
+.stat-n{display:block;font-size:1.5rem;font-weight:600;color:var(--maroon);line-height:1.2}
+.stat-l{display:block;font-size:.75rem;color:var(--muted)}
+
+/* ---------- search / filter ---------- */
+.toolbar{margin:8px 0 12px}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+#showing{margin-top:8px}
+#showing:empty{display:none}
+
+/* ---------- the list ---------- */
+.group{
+  background:var(--cream);
+  border:1px solid var(--rose-line);
+  border-radius:var(--radius);
+  margin-bottom:12px;
+  overflow:hidden;
+}
+.group summary{
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  padding:12px 16px;
+  cursor:pointer;
+  background:var(--blush-1);
+  list-style:none;
+}
+.group summary::-webkit-details-marker{display:none}
+.group summary::before{content:"\25BE";color:var(--gold);margin-right:-2px;transition:transform .15s}
+.group:not([open]) summary::before{transform:rotate(-90deg)}
+.group-name{flex:1;font-weight:600;color:var(--maroon-deep)}
+.group-count{font-size:.8rem;color:var(--muted);white-space:nowrap}
+
+.guests{list-style:none;margin:0;padding:0}
+.guests li + li{border-top:1px solid var(--blush-2)}
+.guest{
+  display:block;width:100%;
+  font:inherit;color:inherit;text-align:left;
+  background:none;border:0;
+  padding:11px 16px;
+  cursor:pointer;
+}
+.guest:hover{background:var(--white)}
+.guest.editing{background:#FFF6DE}
+.g-top{display:flex;gap:8px;align-items:baseline}
+.g-name{flex:1;font-weight:500;overflow-wrap:anywhere}
+.g-count{
+  font-size:.8rem;font-weight:600;color:var(--maroon);
+  background:var(--blush-2);border-radius:999px;padding:1px 8px;
+}
+.g-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.78rem;color:var(--muted);margin-top:3px}
+.g-notes{display:block;font-size:.85rem;font-style:italic;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
+
+.badge{border-radius:999px;padding:0 8px;font-size:.72rem;font-weight:600;color:var(--white)}
+.side-bride{background:var(--bride)}
+.side-groom{background:var(--groom)}
+.side-both{background:var(--both)}
+
+.empty{text-align:center;color:var(--muted);padding:28px 8px;font-style:italic}
+
+/* ---------- footer ---------- */
+.actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:24px;text-align:center}
+.actions p{flex-basis:100%;margin-top:8px}
+
+/* ---------- categories dialog ---------- */
+dialog{
+  border:1px solid var(--rose-line);
+  border-radius:var(--radius);
+  background:var(--cream);
+  color:var(--ink);
+  padding:0;
+  width:min(520px, calc(100% - 32px));
+  max-height:calc(100% - 48px);
+}
+dialog::backdrop{background:rgba(59,22,30,.45)}
+.dialog-body{padding:18px 16px}
+.dialog-body h2{font-size:1.15rem;color:var(--maroon-deep);margin-bottom:12px}
+.cat-list{list-style:none;margin:0 0 12px;padding:0}
+.cat-list li{display:flex;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--blush-2)}
+.cat-list li input{flex:1;min-width:0;min-height:38px;padding:6px 10px}
+.cat-list li .small{min-width:1.5em;text-align:center}
+.close{width:100%;margin-top:16px}
+
+/* ---------- toast ---------- */
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:calc(20px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  max-width:calc(100% - 32px);
+  width:max-content;
+  background:var(--ink);
+  color:var(--white);
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:.9rem;
+  box-shadow:0 8px 24px rgba(0,0,0,.25);
+  z-index:1000;
+  text-align:center;
+}
+.toast.error{background:#A1182D;border-radius:14px}
+
+/* ---------- setup page ---------- */
+.steps{padding-left:20px;margin:8px 0 0}
+.steps li{margin-bottom:6px}
+.output{font-family:ui-monospace, Consolas, monospace;font-size:.8rem;min-height:120px}
+.ok{color:#2E6B3A;margin-top:12px}

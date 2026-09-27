@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Guest List Setup</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <span class="orn">&#9670;</span>
+    <h1 class="script">Setup</h1>
+    <p class="sub">One-time step for whoever manages the app</p>
+  </header>
+
+  <section class="card">
+    <h2>Lock your token with a passcode</h2>
+    <p class="muted small">Everything happens inside this browser. The token is only sent to
+      api.github.com (for the test below), never anywhere else, and is not saved.</p>
+
+    <form id="setupForm">
+      <label for="token">GitHub fine-grained token</label>
+      <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…" required>
+
+      <label for="pass1">Family passcode</label>
+      <input id="pass1" type="password" autocomplete="new-password" autocapitalize="off" required minlength="8">
+      <p class="muted small">Use a phrase of a few words, e.g. <em>pine hills december wedding</em>.
+        Anyone who knows it can see and change the list.</p>
+
+      <label for="pass2">Passcode again</label>
+      <input id="pass2" type="password" autocomplete="new-password" autocapitalize="off" required>
+
+      <div class="form-actions">
+        <button class="btn primary" type="submit" id="goBtn">Generate</button>
+      </div>
+      <p class="error" id="err" role="alert" hidden></p>
+    </form>
+  </section>
+
+  <section class="card" id="result" hidden>
+    <h2>Paste this into js/config.js</h2>
+    <p class="muted small">Replace the line <code>vault: null,</code> with:</p>
+    <textarea class="output" id="out" readonly></textarea>
+    <div class="form-actions">
+      <button class="btn ghost" type="button" id="copyBtn">Copy</button>
+    </div>
+    <p class="muted small" id="testMsg">Testing access to the data repository&hellip;</p>
+  </section>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/vault.js"></script>
+<script>
+(function () {
+  'use strict';
+  const $ = function (id) { return document.getElementById(id); };
+
+  $('setupForm').addEventListener('submit', async function (ev) {
+    ev.preventDefault();
+    const err = $('err');
+    err.hidden = true;
+    const token = $('token').value.trim();
+    const p1 = $('pass1').value, p2 = $('pass2').value;
+    if (p1 !== p2) { err.textContent = 'The two passcodes do not match.'; err.hidden = false; return; }
+    if (p1.trim().length < 8) { err.textContent = 'Please use at least 8 characters.'; err.hidden = false; return; }
+
+    $('goBtn').disabled = true;
+    $('goBtn').textContent = 'Working…';
+    try {
+      const vault = await Vault.encrypt(token, p1);
+      if (await Vault.decrypt(vault, p1) !== token) throw new Error('round-trip check failed');
+      $('out').value = 'vault: ' + JSON.stringify(vault) + ',';
+      $('result').hidden = false;
+      $('result').scrollIntoView({ behavior: 'smooth' });
+      testAccess(token);
+    } catch (e) {
+      err.textContent = 'Could not encrypt: ' + e.message;
+      err.hidden = false;
+    } finally {
+      $('goBtn').disabled = false;
+      $('goBtn').textContent = 'Generate';
+    }
+  });
+
+  async function testAccess(token) {
+    const r = CONFIG.dataRepo;
+    const msg = $('testMsg');
+    msg.className = 'muted small';
+    msg.textContent = 'Testing access to ' + r.owner + '/' + r.repo + '…';
+    try {
+      const res = await fetch('https://api.github.com/repos/' + r.owner + '/' + r.repo, {
+        headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + token },
+        cache: 'no-store'
+      });
+      if (res.status === 401) throw new Error('GitHub rejected the token (wrong, expired or revoked).');
+      if (res.status === 404) throw new Error('The token cannot see ' + r.owner + '/' + r.repo + '. Check the repo exists and is selected under "Repository access".');
+      if (!res.ok) throw new Error('GitHub answered ' + res.status + '.');
+      const repo = await res.json();
+      msg.className = 'ok';
+      msg.textContent = 'Token works: it can reach ' + repo.full_name + (repo.private ? ' (private).' : ' - warning: this repo is PUBLIC, so anyone can read the list on github.com.');
+    } catch (e) {
+      msg.className = 'error';
+      msg.textContent = e.message;
+    }
+  }
+
+  $('copyBtn').addEventListener('click', function () {
+    const out = $('out');
+    out.select();
+    (navigator.clipboard ? navigator.clipboard.writeText(out.value) : Promise.reject())
+      .catch(function () { document.execCommand('copy'); })
+      .then(function () { $('copyBtn').textContent = 'Copied'; });
+  });
+})();
+</script>
+</body>
+</html>
