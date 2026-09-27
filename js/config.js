@@ -23,7 +23,7 @@ const CONFIG = {
      Open setup.html, enter your GitHub token and the family
      passcode, then replace  null  below with what it gives you.
      This is encrypted - the real token never appears here. */
-  vault: null,
+  vault: {"v":1,"iter":600000,"salt":"wNGzuB5FF0/L2/fdZl0KeA==","iv":"P27W/Q6mvj94hN+R","ct":"4M8IRs+iyUtCVAuwStd0NeDSN76FpTXjXCjP9+3mHZMl7bkOYVek9S6ZompPmpH9mnrgkUji58Oak9/fmjFNkFy6iO+5Q7Czmh5rH34SKw5QfYG2qllFr6BOLwjfhqSUasoeToonwybVCk+Sew=="},
 
   /* ---------- 4. SIDES ----------
      The ids (bride / groom / both) are what gets saved - change
